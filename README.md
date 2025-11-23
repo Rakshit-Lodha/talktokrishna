@@ -140,4 +140,5 @@ cp .env.example .env
 # Run
 python main.py
 ```
+Included dataset for testing
 ---
