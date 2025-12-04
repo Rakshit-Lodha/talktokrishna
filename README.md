@@ -6,7 +6,7 @@ An AI-powered spiritual counselor providing guidance from the Bhagavad Gita for 
 
 ---
 
-## 🎯 What It Does
+## What It Does
 
 Ask Krishna about life's challenges and receive wisdom grounded in 700 verses from the Bhagavad Gita.
 
@@ -36,9 +36,100 @@ Ask Krishna about life's challenges and receive wisdom grounded in 700 verses fr
 | **Correctness** | 91.7/100 | High Gita accuracy, minimal hallucination |
 | **Tone & Persona** | 87.8/100 | Krishna's voice is consistent |
 | **Gita Reference** | 83.5/100 | Appropriate verse citations |
-| **Safety** | 100/100 | ✅ All crisis situations handled appropriately |
+| **Safety** | 100/100 |  All crisis situations handled appropriately |
 
 **Response Time:** ~3-4 seconds | **Database:** 700 Bhagavad Gita verses
+
+---
+---
+
+## Evaluation Journey: Iteration & Learning
+
+### Baseline Performance (Prompt v1)
+**Overall Score:** 84.2/100 | **Std Dev:** 6.09
+
+| Category | Score | Weakest Metric |
+|----------|-------|----------------|
+| A (Crisis) | 85.8 | - |
+| B (Philosophical) | 87.9 | ⭐ Best |
+| C (Dangerous) | 86.9 | - |
+| D (Relationships) | 82.2 | - |
+| E (Practical) | 86.8 | - |
+| F (Adversarial) | 78.8 | Relevance: 69 ⚠️ |
+| G (Negative) | 86.0 | - |
+
+**Key Insight:** Category F (adversarial challenges) struggled with relevance when users rejected spiritual tone.
+
+---
+
+### Optimization Attempt (Prompt v2)
+
+**Hypothesis:** Category-specific prompt handling would improve adversarial query responses.
+
+**Implementation:**
+- Added category classification logic to prompt
+- Specialized handling for Category F:
+  - Shorter responses
+  - No verse citations for adversarial users
+  - Direct acknowledgment of user frustration
+
+**Expected:** Category F improvement without affecting other categories
+
+---
+
+### Results: Prompt v2
+
+**Overall Score:** 78.6/100 (-5.6) | **Std Dev:** 13.02 (+6.93)
+
+| Category | Score | Change |
+|----------|-------|--------|
+| A (Crisis) | 80.7 | -5.1 ⚠️ |
+| B (Philosophical) | 83.3 | -4.6 |
+| C (Dangerous) | 72.3 | -14.6 ⚠️⚠️ |
+| D (Relationships) | 77.3 | -4.9 |
+| E (Practical) | 82.2 | -4.6 |
+| F (Adversarial) | 75.0 | -3.8 (despite +7 relevance) |
+| G (Negative) | 78.2 | -7.8 |
+
+**Key Metrics Impact:**
+- Gita Reference Quality: 83.5 → 71.9 (-11.6) 📉
+- Tone + Persona: 87.8 → 78.3 (-9.5) 📉
+- Std Deviation: 6.09 → 13.02 (+114%) 📉
+
+---
+
+### Root Cause Analysis
+
+**What went wrong:**
+
+1. **Added Complexity Hurt Consistency**
+   - Multi-step prompt reasoning reduced model reliability
+   - Category classification introduced failure points
+   - More complex != better performance
+
+2. **Eval-Product Mismatch**
+   - Removing shlokas improved UX for Category F
+   - But eval rubric still expected Gita references
+   - Good product decision scored poorly
+
+3. **Unintended Consequences**
+   - Fixing one category (F) degraded all others
+   - One complete refusal (Category C: dangerous query)
+   - Overall user experience worse despite local improvement
+
+---
+
+### Engineering Decision: Revert to Baseline
+
+**Rationale:**
+- Baseline (84.2) already production-ready
+- Optimization decreased quality across board
+- Higher variance (std 6→13) = less predictable responses
+- **Simple, direct prompts > complex multi-step logic**
+
+**Key Learning:** Premature optimization without understanding trade-offs can hurt more than help.
+
+**Here is the eval comparison:**https://docs.google.com/spreadsheets/d/1AC6S206R_NETqPQWPqh9nJyuhZcHKRLOiyAraMcuv74/edit?usp=sharing
 
 ---
 
