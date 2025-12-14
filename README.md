@@ -2,7 +2,7 @@
 
 An AI-powered spiritual counselor providing guidance from the Bhagavad Gita for modern life challenges. Built with RAG architecture, comprehensive evaluation framework, and production-grade safety measures.
 
-**Status:** Production-ready MVP | **Baseline Score:** 84.2/100 | **Safety:** 100%
+**Baseline Score:** 84.2/100 | **Safety:** 100%
 
 ---
 
